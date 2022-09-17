@@ -1,0 +1,18 @@
+Package: SelzerSilver
+Type: Package
+Title: Updates the Selzer+Silver model with the Latest Data
+Version: 0.1.0
+Author: Paul Cartos
+Maintainer: Paul Cartos <secondhandcartography@gmail.com>
+Description: Every night, pulls the latest data from 538 to update the
+    Selzer+Silver forecast
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    dplyr,
+    ggplot2,
+    lubridate,
+    readr,
+    rjson,
+    tidyr
