@@ -1,6 +1,6 @@
 on:
   schedule:
-    - cron: "1 18 * * *"
+    - cron: "1 6 * * *"
 
 name: r-update-selzer-silver
 
