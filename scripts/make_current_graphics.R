@@ -155,17 +155,17 @@ s = 2.7
 
 ragg::agg_png("figures/g_senate.png", width = w, height = h, units = "px",
               background = "transparent", scaling = s)
-g_senate
+print(g_senate)
 dev.off()
 
 ragg::agg_png("figures/g_house.png", width = w, height = h, units = "px",
               background = "transparent", scaling = s)
-g_house
+print(g_house)
 dev.off()
 
 ragg::agg_png("figures/g_donut.png", width = w, height = h, units = "px",
               background = "transparent", scaling = s)
-g_donut
+print(g_donut)
 dev.off()
 
 
