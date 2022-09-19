@@ -12,6 +12,7 @@ LazyData: true
 Imports: 
     dplyr,
     ggplot2,
+    ggthemes,
     grDevices,
     lubridate,
     ragg,
