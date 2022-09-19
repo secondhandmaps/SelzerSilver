@@ -12,7 +12,10 @@ LazyData: true
 Imports: 
     dplyr,
     ggplot2,
+    grDevices,
     lubridate,
+    ragg,
     readr,
     rjson,
+    scales,
     tidyr
