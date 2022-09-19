@@ -160,10 +160,37 @@ dev.off()
 
 ragg::agg_png("figures/g_house.png", width = w, height = h, units = "px",
               background = "transparent", scaling = s)
-g_senate
+g_house
+dev.off()
+
+ragg::agg_png("figures/g_donut.png", width = w, height = h, units = "px",
+              background = "transparent", scaling = s)
+g_donut
 dev.off()
 
 
-ggsave("figures/g_senate.png", g_senate, device = png,
-       width = w, height = h, units = "px",
-       scale = 0.2, dpi = 72, bg = 'transparent')
+page_fn = "../shc/content/SelzerSilver_md.md"
+if (file.exists(page_fn)) {
+  lines = readLines(page_fn)
+  house_line = grepl("seats in the House", lines)
+  senate_line = grepl("seats in the Senate", lines)
+  overall_line = grepl("winning the Senate", lines)
+
+  new_overall_text = paste0("The Democrats currently have a **",
+                            scales::percent(results_df_w_dem$p_d_win_Senate),
+                            "** chance of winning the Senate and a **",
+                            scales::percent(results_df_w_dem$p_d_win_House),
+                            "** chance of winning the House.")
+  new_senate_text = paste0("The Democrats have an 80% chance of controlling between **",
+                           dem_bounds_df_w$d_lower_bound_senate, "** and **",
+                           dem_bounds_df_w$d_upper_bound_senate,
+                           "** seats in the Senate.")
+  new_house_text = paste0("The Democrats have an 80% chance of controlling between **",
+                          dem_bounds_df_w$d_lower_bound_house, "** and **",
+                          dem_bounds_df_w$d_upper_bound_house,
+                          "** seats in the House")
+  lines[overall_line] = new_overall_text
+  lines[house_line] = new_house_text
+  lines[senate_line] = new_senate_text
+  writeLines(lines, page_fn)
+}
