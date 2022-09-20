@@ -1,6 +1,5 @@
 on:
-  schedule:
-    - cron: "1 6 * * *"
+  public
 
 name: r-update-selzer-silver
 
