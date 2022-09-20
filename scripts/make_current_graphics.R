@@ -113,7 +113,10 @@ g_donut = ggplot(donut_df,
   facet_wrap("house") +
   geom_text(aes(x = -2, y = 0, label = label), fontface = "bold",  color = biden_blue,
             size = 14) +
-  theme(strip.text.x = element_text(size = 30))
+  labs(caption = paste0("Updated ", format(Sys.Date(), "%d %b %Y"))) +
+  theme(strip.text.x = element_text(size = 30),
+        plot.caption = element_text(size = 13, color = "gray80", hjust = 0.95))
+
 
 # Senate plot
 g_senate = ggplot(senate_histogram_df, aes(x = `D Senate Seats`)) +
