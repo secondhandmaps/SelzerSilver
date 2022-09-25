@@ -115,7 +115,7 @@ g_donut = ggplot(donut_df,
             size = 14) +
   labs(caption = paste0("Updated ", format(Sys.Date(), "%d %b %Y"))) +
   theme(strip.text.x = element_text(size = 30),
-        plot.caption = element_text(size = 13, color = "gray80", hjust = 0.95))
+        plot.caption = element_text(size = 13, color = "gray60", hjust = 0.95))
 
 
 # Senate plot
@@ -185,12 +185,12 @@ if (file.exists(page_fn)) {
                             scales::percent(results_df_w_dem$p_d_win_House),
                             "** chance of winning the House.")
   new_senate_text = paste0("The Democrats have an 80% chance of controlling between **",
-                           dem_bounds_df_w$d_lower_bound_senate, "** and **",
-                           dem_bounds_df_w$d_upper_bound_senate,
+                           round(dem_bounds_df_w$d_lower_bound_senate), "** and **",
+                           round(dem_bounds_df_w$d_upper_bound_senate),
                            "** seats in the Senate.")
   new_house_text = paste0("The Democrats have an 80% chance of controlling between **",
-                          dem_bounds_df_w$d_lower_bound_house, "** and **",
-                          dem_bounds_df_w$d_upper_bound_house,
+                          round(dem_bounds_df_w$d_lower_bound_house), "** and **",
+                          round(dem_bounds_df_w$d_upper_bound_house),
                           "** seats in the House")
   lines[overall_line] = new_overall_text
   lines[house_line] = new_house_text

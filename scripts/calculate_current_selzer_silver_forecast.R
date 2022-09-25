@@ -9,7 +9,7 @@ current_538_sims =
 
 states <- current_538_sims$states
 n_sims <- length(current_538_sims$maps)
-sims <- array(NA, c(n_sims, 61), dimnames=list(NULL, c("R Win Senate", "R Senate Seats", "D Senate Seats", "R Win House", "R House Seats", "D House Seats", states)))
+sims <- array(NA, c(n_sims, length(states) + 6), dimnames=list(NULL, c("R Win Senate", "R Senate Seats", "D Senate Seats", "R Win House", "R House Seats", "D House Seats", states)))
 for (i in 1:n_sims){
   sims[i,] <- current_538_sims$maps[[i]]
 }
@@ -44,7 +44,7 @@ outcome_df_w = r_share_df |>
   mutate(weights = dnorm(`IA-S3`,
                          mean = latest_d_r_split$REP,
                          sd = latest_d_r_split$moe/2)) |>
-  select(`R Win Senate`:`D House Seats`, weights)
+  select(`R Win Senate`:`D House Seats`, weights, `IA-S3`)
 
 
 
