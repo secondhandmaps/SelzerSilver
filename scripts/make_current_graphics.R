@@ -8,6 +8,7 @@ outcome_df_w = outcome_df_w_all %>%
   slice_max(timestamp, with_ties = TRUE)
 biden_blue = "#003c8e" #Biden Blue
 trump_red = "#c90627"
+selzer_polls = readRDS("data/selzer_polls.RDS")
 
 # Functions
 transparent_background = function() {
@@ -97,7 +98,6 @@ house_histogram_df = outcome_df_w |>
 
 
 # Donut Plot
-
 g_donut = ggplot(donut_df,
                  aes(x = x,
                      y = value,
@@ -116,6 +116,20 @@ g_donut = ggplot(donut_df,
   labs(caption = paste0("Updated ", format(Sys.Date(), "%d %b %Y"))) +
   theme(strip.text.x = element_text(size = 30),
         plot.caption = element_text(size = 13, color = "gray60", hjust = 0.95))
+
+caption1 = paste0("Date of FiveThirtyEight simulations: ",
+                  format(max(outcome_df_w_all$timestamp), "%d %b %Y"))
+caption2 = paste0("Date of most recent Selzer poll: ",
+                  format(max(selzer_polls$end_date), "%d %b %Y"))
+g_donut_wordy =
+g_donut +
+  labs(caption = paste(caption1, caption2, sep = "\n"),
+       title = " Probability of the Democrats\n controlling each house of Congress") +
+  theme(strip.text.x = element_text(size = 20),
+        plot.caption = element_text(size = 13, color = "gray60", hjust = 1,
+                                    margin = margin(b = 10)),
+        plot.title.position = "panel",
+        plot.title = element_text(size = 25, margin = margin(b = 20, t = 15), hjust = 0))
 
 
 # Senate plot
@@ -171,6 +185,10 @@ ragg::agg_png("figures/g_donut.png", width = w, height = h, units = "px",
 print(g_donut)
 dev.off()
 
+ragg::agg_png("figures/g_donut_wordy.png", width = w, height = h, units = "px",
+              background = "transparent", scaling = s)
+print(g_donut_wordy)
+dev.off()
 
 page_fn = "../shc/content/SelzerSilver_md.md"
 if (file.exists(page_fn)) {
