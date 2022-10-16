@@ -98,6 +98,11 @@ house_histogram_df = outcome_df_w |>
 
 
 # Donut Plot
+
+caption1 = paste0("Date of FiveThirtyEight simulations: ",
+format(max(outcome_df_w_all$timestamp), "%d %b %Y"))
+caption2 = paste0("Date of most recent Selzer poll: ",
+                  format(max(selzer_polls$end_date), "%d %b %Y"))
 g_donut = ggplot(donut_df,
                  aes(x = x,
                      y = value,
@@ -113,14 +118,11 @@ g_donut = ggplot(donut_df,
   facet_wrap("house") +
   geom_text(aes(x = -2, y = 0, label = label), fontface = "bold",  color = biden_blue,
             size = 14) +
-  labs(caption = paste0("Updated ", format(Sys.Date(), "%d %b %Y"))) +
+  labs(caption = paste(caption1, caption2, sep = "\n")) +
   theme(strip.text.x = element_text(size = 30),
         plot.caption = element_text(size = 13, color = "gray60", hjust = 0.95))
 
-caption1 = paste0("Date of FiveThirtyEight simulations: ",
-                  format(max(outcome_df_w_all$timestamp), "%d %b %Y"))
-caption2 = paste0("Date of most recent Selzer poll: ",
-                  format(max(selzer_polls$end_date), "%d %b %Y"))
+
 g_donut_wordy =
 g_donut +
   labs(caption = paste(caption1, caption2, sep = "\n"),
