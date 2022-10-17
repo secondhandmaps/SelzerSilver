@@ -192,7 +192,7 @@ ragg::agg_png("figures/g_donut_wordy.png", width = w, height = h, units = "px",
 print(g_donut_wordy)
 dev.off()
 
-page_fn = "../shc/content/SelzerSilver_md.md"
+page_fn = "../shc/content/SelzerSilver.md"
 if (file.exists(page_fn)) {
   lines = readLines(page_fn)
   house_line = grepl("seats in the House", lines)
