@@ -20,7 +20,7 @@ r_share_df = sims_df |>
 # That's our data.frame of the current 538 simulations
 
 # Now read in the polls and pull the latest Selzer poll
-polls_df = read_csv("https://projects.fivethirtyeight.com/polls-page/data/senate_polls.csv")
+polls_df = read_csv("https://projects.fivethirtyeight.com/polls/data/senate_polls.csv")
 latest_selzer_poll = polls_df |>
   filter(pollster_id == 437,# Selzer & Co
          race_id == 8930) |> # Grassley/Franken senate race
@@ -79,3 +79,4 @@ if (file.exists(poll_fn)) {
 } else {
   saveRDS(latest_d_r_split, poll_fn)
 }
+
