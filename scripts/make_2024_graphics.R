@@ -60,8 +60,6 @@ wquantile <- function(x, probs, weights = NA) {
 results_df_w = outcome_df_w |>
   summarize(across(ia:nv, \(x) sum((x > 50) * weights) / sum(weights)),
             overall = sum(weights * (1-prob_harris_wins_given_outcome))/sum(weights))
-  summarize(p_r_win_senate = sum(`R Win Senate` * weights) / sum(weights),
-            p_r_win_house = sum(`R Win House` * weights) / sum(weights))
 
 results_df_w_dem = outcome_df_w |>
   summarize(across(ia:nv, \(x) sum((x < 50) * weights) / sum(weights)),
@@ -178,7 +176,7 @@ g_states = ggplot(state_plot_df, aes(x = state_name)) +
           plot.title = element_text(size = 20, hjust = 0),
           panel.grid.major.y = element_line(color = "gray90", linewidth = 0.4),
           panel.grid.major.x = element_line(color = "gray80", linetype = "solid")) +
-    labs(title = "State Outcomes") +
+    labs(title = "State Outcomes", subtitle = "Dots show the median outcome with 80% uncertainty interval\nBoxes show the probability of Harris winning each state") +
   scale_y_continuous(breaks = c(46, 48, 50, 52, 54), limits = c(45, 54.5)) +
     transparent_background() +
   coord_flip()
