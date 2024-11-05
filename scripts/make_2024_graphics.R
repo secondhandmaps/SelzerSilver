@@ -156,7 +156,7 @@ state_name_lookup = setNames(names(q), tolower(q))
 
 state_plot_df = left_join(r_bounds_df_w, donut_df1, by = c(state = "location")) |>
   mutate(p_harris_wins = scales::percent(value, accuracy = 1)) |>
-  select(-names, -value) |>
+  dplyr::select(-names, -value) |>
   mutate(state_name = state_name_lookup[state]) |>
   mutate(state_name = fct_reorder(state_name, 1-r_med))
 

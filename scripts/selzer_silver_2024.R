@@ -6,19 +6,31 @@ library(tidyr)
 library(mvtnorm)
 library(MASS)
 
-current_538_outcomes = read_csv("https://static.dwcdn.net/data/EFZGh.csv",
-                                col_types = cols(
-                                  .default = col_double(),
-                                  state = col_character(),
-                                )) |>
-  mutate(margin_med = coalesce(margin_d, margin_r, margin_n), .keep = "unused")
+# current_538_outcomes = read_csv("https://static.dwcdn.net/data/EFZGh.csv",
+#                                 col_types = cols(
+#                                   .default = col_double(),
+#                                   state = col_character(),
+#                                 )) |>
+#   mutate(margin_med = coalesce(margin_d, margin_r, margin_n), .keep = "unused")
 
-current_538_rshare = current_538_outcomes |>
-  mutate(r_share_hi = (margin_hi+100)/2,
-         r_share_lo = (margin_lo+100)/2,
-         r_share_med = (margin_med+100)/2,
-         .keep = "unused")
+# current_538_rshare = current_538_outcomes |>
+#   mutate(r_share_hi = (margin_hi+100)/2,
+#          r_share_lo = (margin_lo+100)/2,
+#          r_share_med = (margin_med+100)/2,
+#          .keep = "unused")
+# This data wasn't looking right compared to what was on the website, 
+# so I'm pulling this manually from "How we calculate our X forecast"
 
+current_538_rshare_vec = c("pa" = 49.7/(49.7+49.6),
+                       "nv" = 49.6/(49.6+49.0),
+                       "wi" = 49.0/(49.0+50.0),
+                       "nc" = 50.2/(50.2+49.1),
+                       "ga" = 50.2/(50.2+49.2),
+                       "mi" = 48.9/(48.9+50.1),
+                       "az" = 50.7/(50.7+48.3),
+                       "ia" = 52.2/(52.2+46.6))
+current_538_rshare = tibble::enframe(current_538_rshare_vec, name = "state", value = "r_share_med") |>
+  mutate(r_share_med = r_share_med*100)
 # Now I'm going to pull some of the data for specific states to figure out degrees of freedom.
 states = c("az" = "https://static.dwcdn.net/data/tkiXZ.csv",
            "fl" = "https://static.dwcdn.net/data/cZ8v2.csv",
@@ -83,11 +95,11 @@ state_abbr_lookup = c("Iowa" = "IA",
                       "North Carolina" = "NC",
                       "Arizona" = "AZ",
                       "Nevada" = "NV")
-current_538_rshare$state_abbr = tolower(state_abbr_lookup[current_538_rshare$state])
+# current_538_rshare$state_abbr = tolower(state_abbr_lookup[current_538_rshare$state])
 limited_outcomes = current_538_rshare |>
-  filter(!is.na(state_abbr)) |>
+  filter(!is.na(state)) |>
   as.data.frame()
-rownames(limited_outcomes) = limited_outcomes$state_abbr
+rownames(limited_outcomes) = limited_outcomes$state
 delta = limited_outcomes[rownames(Sigma), ]$r_share_med
 mockup_538_sims = rmvt(40000, sigma = Sigma, df = df_avg, delta = delta,
                        type = "shifted")
@@ -166,10 +178,10 @@ if (file.exists(outcome_fn)) {
   prev_outcomes = readRDS(outcome_fn)
   last_day_ran = floor_date(max(prev_outcomes$timestamp), "day")
   curr_day = floor_date(outcome_df_save$timestamp[[1]], "day")
-  if (last_day_ran != curr_day) {
-    curr_outcomes = bind_rows(prev_outcomes, outcome_df_save)
-    saveRDS(curr_outcomes, outcome_fn)
-  }
+  # if (last_day_ran != curr_day) {
+  curr_outcomes = bind_rows(prev_outcomes, outcome_df_save)
+  saveRDS(curr_outcomes, outcome_fn)
+  # }
 } else {
   saveRDS(outcome_df_save, outcome_fn)
 }
